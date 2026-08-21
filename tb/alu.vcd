@@ -1,5 +1,5 @@
 $date
-	Thu Aug 20 22:02:58 2026
+	Fri Aug 21 10:02:46 2026
 $end
 $version
 	Icarus Verilog
@@ -11,7 +11,7 @@ $scope module alu_tb $end
 $var wire 8 ! y [7:0] $end
 $var reg 8 " a [7:0] $end
 $var reg 8 # b [7:0] $end
-$var reg 2 $ sel [1:0] $end
+$var reg 3 $ sel [2:0] $end
 $scope module uut $end
 $var wire 8 % a [7:0] $end
 $var wire 8 & b [7:0] $end
@@ -37,16 +37,24 @@ $end
 #10000
 b101 !
 b101 (
-b1 $
 b1 '
+b1 $
 #20000
 b0 !
 b0 (
-b10 $
 b10 '
+b10 $
 #30000
 b1111 !
 b1111 (
-b11 $
 b11 '
+b11 $
 #40000
+b0 '
+b100 $
+#50000
+b101 !
+b101 (
+b1 '
+b101 $
+#60000

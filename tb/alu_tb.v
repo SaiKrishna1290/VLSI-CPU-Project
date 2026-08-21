@@ -2,12 +2,15 @@
 
 module alu_tb;
 
+    // Inputs
     reg [7:0] a;
     reg [7:0] b;
-    reg [1:0] sel;
+    reg [2:0] sel;
 
+    // Output
     wire [7:0] y;
 
+    // Instantiate the ALU
     alu uut (
         .a(a),
         .b(b),
@@ -15,32 +18,42 @@ module alu_tb;
         .y(y)
     );
 
+    // Test operations
     initial begin
 
         // Generate waveform file
         $dumpfile("alu.vcd");
         $dumpvars(0, alu_tb);
 
-        // Input values
+        // Initialize inputs
         a = 8'd10;
         b = 8'd5;
 
-        // Addition
-        sel = 2'b00;
+        // ADD: 10 + 5 = 15
+        sel = 3'b000;
         #10;
 
-        // Subtraction
-        sel = 2'b01;
+        // SUB: 10 - 5 = 5
+        sel = 3'b001;
         #10;
 
         // AND
-        sel = 2'b10;
+        sel = 3'b010;
         #10;
 
         // OR
-        sel = 2'b11;
+        sel = 3'b011;
         #10;
 
+        // XOR
+        sel = 3'b100;
+        #10;
+
+        // NOT A
+        sel = 3'b101;
+        #10;
+
+        // Finish simulation
         $finish;
 
     end
