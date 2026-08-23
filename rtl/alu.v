@@ -26,7 +26,6 @@ module alu(
                 y = temp[7:0];
                 carry = temp[8];
 
-                // Signed overflow
                 overflow = (~(a[7] ^ b[7])) & (a[7] ^ y[7]);
             end
 
@@ -34,7 +33,6 @@ module alu(
             3'b001: begin
                 y = a - b;
 
-                // Signed overflow
                 overflow = (a[7] ^ b[7]) & (a[7] ^ y[7]);
             end
 
@@ -53,9 +51,21 @@ module alu(
                 y = a ^ b;
             end
 
-            // NOT A
+            // NOT
             3'b101: begin
                 y = ~a;
+            end
+
+            // SHIFT LEFT
+            3'b110: begin
+                y = a << 1;
+                carry = a[7];
+            end
+
+            // SHIFT RIGHT
+            3'b111: begin
+                y = a >> 1;
+                carry = a[0];
             end
 
             default: begin
@@ -64,7 +74,7 @@ module alu(
 
         endcase
 
-        // Zero flag
+        // Zero Flag
         if (y == 8'b00000000)
             zero = 1'b1;
         else
