@@ -1,5 +1,5 @@
 $date
-	Sun Aug 23 09:05:53 2026
+	Sun Aug 23 09:18:37 2026
 $end
 $version
 	Icarus Verilog
@@ -14,11 +14,11 @@ $var wire 1 # overflow $end
 $var wire 1 $ carry $end
 $var reg 8 % a [7:0] $end
 $var reg 8 & b [7:0] $end
-$var reg 3 ' sel [2:0] $end
+$var reg 4 ' sel [3:0] $end
 $scope module uut $end
 $var wire 8 ( a [7:0] $end
 $var wire 8 ) b [7:0] $end
-$var wire 3 * sel [2:0] $end
+$var wire 4 * sel [3:0] $end
 $var reg 1 $ carry $end
 $var reg 1 # overflow $end
 $var reg 9 + temp [8:0] $end
@@ -46,6 +46,7 @@ b1111 "
 0!
 $end
 #100000
+b0 +
 b101 "
 b101 ,
 b1 '
@@ -100,6 +101,7 @@ b1111111 %
 b1111111 (
 #900000
 1$
+b0 +
 0#
 b10 "
 b10 ,
@@ -116,3 +118,29 @@ b1000000 ,
 b111 '
 b111 *
 #1100000
+b1011 +
+0$
+b1011 "
+b1011 ,
+b1000 '
+b1000 *
+b1010 %
+b1010 (
+#1200000
+1!
+1$
+b100000000 +
+b0 "
+b0 ,
+b11111111 %
+b11111111 (
+#1300000
+0!
+1#
+b10000000 "
+b10000000 ,
+b10000000 +
+0$
+b1111111 %
+b1111111 (
+#1400000
