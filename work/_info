@@ -7,14 +7,14 @@ z2
 !i10e 25
 !i10f 100
 cModel Technology
-Z0 dC:/Users/sai krishna/Documents/VLSI_CPU_Project
+dC:/Users/sai krishna/Documents/VLSI_CPU_Project
 valu
-Z1 !s110 1787660930
+Z0 !s110 1787662400
 !i10b 1
 !s100 S;eMe5n6e^feWQ<mlzZUc2
 Ik3IZ=2V3;UeAo1O0R4Nb02
-Z2 VDg1SIo80bB@j0V0VzS_@n1
-R0
+Z1 VDg1SIo80bB@j0V0VzS_@n1
+Z2 dc:/Users/sai krishna/documents/VLSI_CPU_Project
 w1787659893
 8rtl/alu.v
 Frtl/alu.v
@@ -23,18 +23,18 @@ Z3 OV;L;10.5b;63
 r1
 !s85 0
 31
-Z4 !s108 1787660930.000000
+Z4 !s108 1787662400.000000
 !s107 rtl/alu.v|
 !s90 -reportprogress|300|rtl/alu.v|
 !i113 1
 Z5 tCvgOpt 0
 valu_tb
-R1
+R0
 !i10b 1
 !s100 hco::0HcnRM0klm8=ERXN0
 IVlcjnDmDOInKGaG40;fa@2
+R1
 R2
-R0
 w1787659933
 8tb/alu_tb.v
 Ftb/alu_tb.v
