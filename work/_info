@@ -1,0 +1,50 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/Users/sai krishna/Documents/VLSI_CPU_Project
+valu
+Z1 !s110 1787509509
+!i10b 1
+!s100 gMKRzPPAGJBWCIIjh;fi_3
+IV4nn79EL0B@fmd^cVhGzJ1
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+R0
+w1787459142
+8rtl/alu.v
+Frtl/alu.v
+L0 1
+Z3 OV;L;10.5b;63
+r1
+!s85 0
+31
+Z4 !s108 1787509509.000000
+!s107 rtl/alu.v|
+!s90 -reportprogress|300|rtl/alu.v|
+!i113 1
+Z5 tCvgOpt 0
+valu_tb
+R1
+!i10b 1
+!s100 AfQHaFUfdbVd71jb=gl981
+I7`B^3BZZz9UO3dZJ?X=2_1
+R2
+R0
+w1787456903
+8tb/alu_tb.v
+Ftb/alu_tb.v
+L0 3
+R3
+r1
+!s85 0
+31
+R4
+!s107 tb/alu_tb.v|
+!s90 -reportprogress|300|tb/alu_tb.v|
+!i113 1
+R5

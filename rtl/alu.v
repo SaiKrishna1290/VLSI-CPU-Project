@@ -1,119 +1,116 @@
 module alu(
-    input [7:0] a,
-    input [7:0] b,
-    input [3:0] sel,
+    input  [7:0] a,
+    input  [7:0] b,
+    input  [3:0] sel,
 
     output reg [7:0] y,
-    output reg zero,
-    output reg carry,
-    output reg overflow
+    output zero,
+    output carry,
+    output overflow
 );
 
+    reg carry_reg;
+    reg overflow_reg;
     reg [8:0] temp;
 
     always @(*) begin
 
-        // Default values
         y = 8'b00000000;
-        carry = 1'b0;
-        overflow = 1'b0;
+        carry_reg = 1'b0;
+        overflow_reg = 1'b0;
         temp = 9'b000000000;
 
-        case (sel)
+        case(sel)
 
-            // =====================================
-            // ADD
-            // =====================================
+            // ADDITION
             4'b0000: begin
-                temp = {1'b0, a} + {1'b0, b};
+                temp = a + b;
                 y = temp[7:0];
-                carry = temp[8];
+                carry_reg = temp[8];
 
-                // Signed overflow detection
-                overflow = (~(a[7] ^ b[7])) & (a[7] ^ y[7]);
+                if ((a[7] == b[7]) && (y[7] != a[7]))
+                    overflow_reg = 1'b1;
             end
 
-            // =====================================
-            // SUBTRACT
-            // =====================================
+            // SUBTRACTION
             4'b0001: begin
                 y = a - b;
 
-                // Signed overflow detection
-                overflow = (a[7] ^ b[7]) & (a[7] ^ y[7]);
+                if (a < b)
+                    carry_reg = 1'b1;
+
+                if ((a[7] != b[7]) && (y[7] != a[7]))
+                    overflow_reg = 1'b1;
             end
 
-            // =====================================
             // AND
-            // =====================================
-            4'b0010: begin
+            4'b0010:
                 y = a & b;
-            end
 
-            // =====================================
             // OR
-            // =====================================
-            4'b0011: begin
+            4'b0011:
                 y = a | b;
-            end
 
-            // =====================================
             // XOR
-            // =====================================
-            4'b0100: begin
+            4'b0100:
                 y = a ^ b;
-            end
 
-            // =====================================
             // NOT
-            // =====================================
-            4'b0101: begin
+            4'b0101:
                 y = ~a;
-            end
 
-            // =====================================
             // SHIFT LEFT
-            // =====================================
             4'b0110: begin
                 y = a << 1;
-                carry = a[7];
+                carry_reg = a[7];
             end
 
-            // =====================================
             // SHIFT RIGHT
-            // =====================================
             4'b0111: begin
                 y = a >> 1;
-                carry = a[0];
+                carry_reg = a[0];
             end
 
-            // =====================================
             // INCREMENT
-            // =====================================
             4'b1000: begin
-                temp = {1'b0, a} + 9'd1;
+                temp = a + 1'b1;
                 y = temp[7:0];
-                carry = temp[8];
-
-                // Overflow: +127 + 1 = -128
-                overflow = (~a[7]) & y[7];
+                carry_reg = temp[8];
             end
 
-            // Default
+            // LESS THAN
+            4'b1001: begin
+                if (a < b)
+                    y = 8'b00000001;
+                else
+                    y = 8'b00000000;
+            end
+
+            // GREATER THAN
+            4'b1010: begin
+                if (a > b)
+                    y = 8'b00000001;
+                else
+                    y = 8'b00000000;
+            end
+
+            // EQUAL TO
+            4'b1011: begin
+                if (a == b)
+                    y = 8'b00000001;
+                else
+                    y = 8'b00000000;
+            end
+
             default: begin
                 y = 8'b00000000;
             end
 
         endcase
-
-        // =====================================
-        // ZERO FLAG
-        // =====================================
-        if (y == 8'b00000000)
-            zero = 1'b1;
-        else
-            zero = 1'b0;
-
     end
+
+    assign zero = (y == 8'b00000000);
+    assign carry = carry_reg;
+    assign overflow = overflow_reg;
 
 endmodule

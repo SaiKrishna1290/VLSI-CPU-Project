@@ -2,20 +2,18 @@
 
 module alu_tb;
 
-    // Inputs
     reg [7:0] a;
     reg [7:0] b;
     reg [3:0] sel;
 
-    // Outputs
     wire [7:0] y;
     wire zero;
     wire carry;
     wire overflow;
 
-    // =====================================
+
     // Instantiate ALU
-    // =====================================
+
     alu uut (
         .a(a),
         .b(b),
@@ -26,110 +24,137 @@ module alu_tb;
         .overflow(overflow)
     );
 
+
     initial begin
 
-        // Generate waveform
         $dumpfile("alu.vcd");
         $dumpvars(0, alu_tb);
 
+
         // =====================================
-        // DAY 1: BASIC OPERATIONS
+        // DAY 1 OPERATIONS
         // =====================================
 
-        // ADD: 10 + 5 = 15
+        // ADDITION: 10 + 5 = 15
         a = 8'd10;
         b = 8'd5;
         sel = 4'b0000;
-        #100;
+        #10;
 
-        // SUB: 10 - 5 = 5
+
+        // SUBTRACTION: 10 - 5 = 5
+        a = 8'd10;
+        b = 8'd5;
         sel = 4'b0001;
-        #100;
+        #10;
+
 
         // AND
+        a = 8'b10101010;
+        b = 8'b11001100;
         sel = 4'b0010;
-        #100;
+        #10;
+
 
         // OR
+        a = 8'b10101010;
+        b = 8'b11001100;
         sel = 4'b0011;
-        #100;
+        #10;
+
 
         // =====================================
-        // DAY 2: XOR AND NOT
+        // DAY 2 OPERATIONS
         // =====================================
 
         // XOR
+        a = 8'b10101010;
+        b = 8'b11001100;
         sel = 4'b0100;
-        #100;
+        #10;
 
-        // NOT A
+
+        // NOT
+        a = 8'b10101010;
+        b = 8'b00000000;
         sel = 4'b0101;
-        #100;
+        #10;
+
 
         // =====================================
-        // DAY 3: FLAG TESTS
-        // =====================================
-
-        // ZERO FLAG: 5 - 5 = 0
-        a = 8'd5;
-        b = 8'd5;
-        sel = 4'b0001;
-        #100;
-
-        // CARRY FLAG: 255 + 1 = 256
-        a = 8'd255;
-        b = 8'd1;
-        sel = 4'b0000;
-        #100;
-
-        // OVERFLOW FLAG: 127 + 1
-        a = 8'd127;
-        b = 8'd1;
-        sel = 4'b0000;
-        #100;
-
-        // =====================================
-        // DAY 4: SHIFT OPERATIONS
+        // DAY 4 OPERATIONS
         // =====================================
 
         // SHIFT LEFT
-        // 10000001 << 1 = 00000010
-        // Carry = 1
-        a = 8'b10000001;
-        b = 8'd0;
+        a = 8'b00001111;
+        b = 8'b00000000;
         sel = 4'b0110;
-        #100;
+        #10;
+
 
         // SHIFT RIGHT
-        // 10000001 >> 1 = 01000000
-        // Carry = 1
+        a = 8'b11110000;
+        b = 8'b00000000;
         sel = 4'b0111;
-        #100;
+        #10;
 
-        // =====================================
-        // DAY 5: INCREMENT OPERATION
-        // =====================================
 
-        // 10 + 1 = 11
-        a = 8'd10;
+        // INCREMENT
+        a = 8'd25;
         b = 8'd0;
         sel = 4'b1000;
-        #100;
+        #10;
 
-        // Increment carry test
-        // 255 + 1 = 256
-        // Result = 0, Carry = 1
-        a = 8'd255;
-        sel = 4'b1000;
-        #100;
 
-        // Increment overflow test
-        // 127 + 1 = -128 (signed)
-        a = 8'd127;
-        sel = 4'b1000;
-        #100;
+        // =====================================
+        // DAY 5 OPERATIONS
+        // =====================================
 
-        // Finish simulation
+        // LESS THAN
+        // 10 < 20 → y = 1
+
+        a = 8'd10;
+        b = 8'd20;
+        sel = 4'b1001;
+        #10;
+
+
+        // GREATER THAN
+        // 25 > 10 → y = 1
+
+        a = 8'd25;
+        b = 8'd10;
+        sel = 4'b1010;
+        #10;
+
+
+        // EQUAL TO
+        // 15 == 15 → y = 1
+
+        a = 8'd15;
+        b = 8'd15;
+        sel = 4'b1011;
+        #10;
+
+
+        // LESS THAN FALSE
+        // 30 < 10 → y = 0
+
+        a = 8'd30;
+        b = 8'd10;
+        sel = 4'b1001;
+        #10;
+
+
+        // GREATER THAN FALSE
+        // 10 > 20 → y = 0
+
+        a = 8'd10;
+        b = 8'd20;
+        sel = 4'b1010;
+        #10;
+
+
         $finish;
 
     end
