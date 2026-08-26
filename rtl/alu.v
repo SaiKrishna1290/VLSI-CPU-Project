@@ -1,116 +1,88 @@
 module alu(
-    input  [7:0] a,
-    input  [7:0] b,
-    input  [3:0] sel,
+    input [7:0] a,
+    input [7:0] b,
+    input [3:0] sel,
 
     output reg [7:0] y,
-    output zero,
-    output carry,
-    output overflow
+    output reg zero,
+    output reg carry,
+    output reg overflow
 );
 
-    reg carry_reg;
-    reg overflow_reg;
-    reg [8:0] temp;
+reg [8:0] temp;
 
-    always @(*) begin
+always @(*) begin
 
-        y = 8'b00000000;
-        carry_reg = 1'b0;
-        overflow_reg = 1'b0;
-        temp = 9'b000000000;
+    // Default values
+    y = 8'b00000000;
+    carry = 1'b0;
+    overflow = 1'b0;
+    temp = 9'b000000000;
 
-        case(sel)
+    case (sel)
 
-            // ADDITION
-            4'b0000: begin
-                temp = a + b;
-                y = temp[7:0];
-                carry_reg = temp[8];
+        // Basic arithmetic operations
+        4'b0000: begin
+            temp = a + b;
+            y = temp[7:0];
+            carry = temp[8];
+            overflow = (~(a[7] ^ b[7])) & (y[7] ^ a[7]);
+        end
 
-                if ((a[7] == b[7]) && (y[7] != a[7]))
-                    overflow_reg = 1'b1;
-            end
+        4'b0001: begin
+            y = a - b;
+            carry = (a >= b);
+            overflow = (a[7] ^ b[7]) & (y[7] ^ a[7]);
+        end
 
-            // SUBTRACTION
-            4'b0001: begin
-                y = a - b;
+        // Basic logic operations
+        4'b0010: y = a & b;       // AND
 
-                if (a < b)
-                    carry_reg = 1'b1;
+        4'b0011: y = a | b;       // OR
 
-                if ((a[7] != b[7]) && (y[7] != a[7]))
-                    overflow_reg = 1'b1;
-            end
+        4'b0100: y = a ^ b;       // XOR
 
-            // AND
-            4'b0010:
-                y = a & b;
+        4'b0101: y = ~a;          // NOT
 
-            // OR
-            4'b0011:
-                y = a | b;
+        // Shift operations
+        4'b0110: y = a << 1;      // Shift Left
 
-            // XOR
-            4'b0100:
-                y = a ^ b;
+        4'b0111: y = a >> 1;      // Shift Right
 
-            // NOT
-            4'b0101:
-                y = ~a;
+        // Increment
+        4'b1000: begin
+            temp = a + 1;
+            y = temp[7:0];
+            carry = temp[8];
+        end
 
-            // SHIFT LEFT
-            4'b0110: begin
-                y = a << 1;
-                carry_reg = a[7];
-            end
+        // Comparison operations
+        4'b1001: y = (a == b) ? 8'b00000001 : 8'b00000000;
 
-            // SHIFT RIGHT
-            4'b0111: begin
-                y = a >> 1;
-                carry_reg = a[0];
-            end
+        4'b1010: y = (a > b) ? 8'b00000001 : 8'b00000000;
 
-            // INCREMENT
-            4'b1000: begin
-                temp = a + 1'b1;
-                y = temp[7:0];
-                carry_reg = temp[8];
-            end
+        4'b1011: y = (a < b) ? 8'b00000001 : 8'b00000000;
 
-            // LESS THAN
-            4'b1001: begin
-                if (a < b)
-                    y = 8'b00000001;
-                else
-                    y = 8'b00000000;
-            end
+        // =========================
+        // Day 6 Operations
+        // =========================
 
-            // GREATER THAN
-            4'b1010: begin
-                if (a > b)
-                    y = 8'b00000001;
-                else
-                    y = 8'b00000000;
-            end
+        4'b1100: y = ~(a & b);    // NAND
 
-            // EQUAL TO
-            4'b1011: begin
-                if (a == b)
-                    y = 8'b00000001;
-                else
-                    y = 8'b00000000;
-            end
+        4'b1101: y = ~(a | b);    // NOR
 
-            default: begin
-                y = 8'b00000000;
-            end
+        4'b1110: y = ~(a ^ b);    // XNOR
 
-        endcase
-    end
+        default: y = 8'b00000000;
 
-    assign zero = (y == 8'b00000000);
-    assign carry = carry_reg;
-    assign overflow = overflow_reg;
+    endcase
+
+    // Zero flag
+    if (y == 8'b00000000)
+        zero = 1'b1;
+    else
+        zero = 1'b0;
+
+end
 
 endmodule
