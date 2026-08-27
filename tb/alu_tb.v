@@ -2,18 +2,17 @@
 
 module alu_tb;
 
-    // Inputs
     reg [7:0] a;
     reg [7:0] b;
-    reg [3:0] sel;
+    reg [4:0] sel;
 
-    // Outputs
     wire [7:0] y;
     wire zero;
     wire carry;
     wire overflow;
+    wire div_zero;
 
-    // Instantiate ALU
+    // ALU Instantiation
     alu uut (
         .a(a),
         .b(b),
@@ -21,110 +20,125 @@ module alu_tb;
         .y(y),
         .zero(zero),
         .carry(carry),
-        .overflow(overflow)
+        .overflow(overflow),
+        .div_zero(div_zero)
     );
 
     initial begin
 
-        // Waveform file
-        $dumpfile("alu.vcd");
-        $dumpvars(0, alu_tb);
-
         // =========================
-        // Day 1: Basic Operations
+        // BASIC OPERATIONS
         // =========================
 
         // ADD: 10 + 5 = 15
         a = 8'd10;
         b = 8'd5;
-        sel = 4'b0000;
+        sel = 5'b00000;
         #10;
 
         // SUB: 10 - 5 = 5
         a = 8'd10;
         b = 8'd5;
-        sel = 4'b0001;
+        sel = 5'b00001;
         #10;
 
         // AND
         a = 8'b10101010;
         b = 8'b11001100;
-        sel = 4'b0010;
+        sel = 5'b00010;
         #10;
 
         // OR
-        sel = 4'b0011;
+        sel = 5'b00011;
         #10;
 
         // XOR
-        sel = 4'b0100;
+        sel = 5'b00100;
         #10;
 
         // NOT
-        a = 8'b10101010;
-        sel = 4'b0101;
+        sel = 5'b00101;
         #10;
 
-        // =========================
-        // Day 4: Shift Operations
-        // =========================
-
-        // Shift Left
+        // SHIFT LEFT
         a = 8'b00001111;
-        sel = 4'b0110;
+        sel = 5'b00110;
         #10;
 
-        // Shift Right
+        // SHIFT RIGHT
         a = 8'b11110000;
-        sel = 4'b0111;
+        sel = 5'b00111;
         #10;
 
-        // Increment
+        // INCREMENT
         a = 8'd25;
-        sel = 4'b1000;
+        sel = 5'b01000;
         #10;
 
         // =========================
-        // Day 5: Comparison
+        // COMPARISON
         // =========================
 
-        // Equal
+        // EQUAL
         a = 8'd10;
         b = 8'd10;
-        sel = 4'b1001;
+        sel = 5'b01001;
         #10;
 
-        // Greater Than
+        // GREATER THAN
         a = 8'd20;
         b = 8'd10;
-        sel = 4'b1010;
+        sel = 5'b01010;
         #10;
 
-        // Less Than
+        // LESS THAN
         a = 8'd5;
         b = 8'd10;
-        sel = 4'b1011;
+        sel = 5'b01011;
         #10;
 
         // =========================
-        // Day 6: NAND
+        // DAY 6 OPERATIONS
         // =========================
 
+        // NAND
         a = 8'b10101010;
         b = 8'b11001100;
-        sel = 4'b1100;
+        sel = 5'b01100;
         #10;
 
         // NOR
-        a = 8'b10101010;
-        b = 8'b11001100;
-        sel = 4'b1101;
+        sel = 5'b01101;
         #10;
 
         // XNOR
-        a = 8'b10101010;
-        b = 8'b11001100;
-        sel = 4'b1110;
+        sel = 5'b01110;
+        #10;
+
+        // =========================
+        // DAY 7: MULTIPLICATION
+        // =========================
+
+        // 5 × 3 = 15
+        a = 8'd5;
+        b = 8'd3;
+        sel = 5'b01111;
+        #10;
+
+        // =========================
+        // DAY 7: DIVISION
+        // =========================
+
+        // 20 / 4 = 5
+        a = 8'd20;
+        b = 8'd4;
+        sel = 5'b10000;
+        #10;
+
+        // DIVISION BY ZERO
+        a = 8'd20;
+        b = 8'd0;
+        sel = 5'b10000;
         #10;
 
         $finish;

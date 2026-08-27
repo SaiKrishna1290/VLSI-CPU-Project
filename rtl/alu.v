@@ -1,12 +1,13 @@
 module alu(
     input [7:0] a,
     input [7:0] b,
-    input [3:0] sel,
+    input [4:0] sel,
 
     output reg [7:0] y,
     output reg zero,
     output reg carry,
-    output reg overflow
+    output reg overflow,
+    output reg div_zero
 );
 
 reg [8:0] temp;
@@ -17,68 +18,130 @@ always @(*) begin
     y = 8'b00000000;
     carry = 1'b0;
     overflow = 1'b0;
+    div_zero = 1'b0;
     temp = 9'b000000000;
 
     case (sel)
 
-        // Basic arithmetic operations
-        4'b0000: begin
+        // =========================
+        // BASIC ARITHMETIC
+        // =========================
+
+        // ADDITION
+        5'b00000: begin
             temp = a + b;
             y = temp[7:0];
             carry = temp[8];
             overflow = (~(a[7] ^ b[7])) & (y[7] ^ a[7]);
         end
 
-        4'b0001: begin
+        // SUBTRACTION
+        5'b00001: begin
             y = a - b;
             carry = (a >= b);
             overflow = (a[7] ^ b[7]) & (y[7] ^ a[7]);
         end
 
-        // Basic logic operations
-        4'b0010: y = a & b;       // AND
+        // =========================
+        // LOGICAL OPERATIONS
+        // =========================
 
-        4'b0011: y = a | b;       // OR
+        // AND
+        5'b00010: y = a & b;
 
-        4'b0100: y = a ^ b;       // XOR
+        // OR
+        5'b00011: y = a | b;
 
-        4'b0101: y = ~a;          // NOT
+        // XOR
+        5'b00100: y = a ^ b;
 
-        // Shift operations
-        4'b0110: y = a << 1;      // Shift Left
+        // NOT
+        5'b00101: y = ~a;
 
-        4'b0111: y = a >> 1;      // Shift Right
+        // =========================
+        // SHIFT OPERATIONS
+        // =========================
 
-        // Increment
-        4'b1000: begin
+        // SHIFT LEFT
+        5'b00110: begin
+            y = a << 1;
+            carry = a[7];
+        end
+
+        // SHIFT RIGHT
+        5'b00111: begin
+            y = a >> 1;
+            carry = a[0];
+        end
+
+        // =========================
+        // INCREMENT
+        // =========================
+
+        5'b01000: begin
             temp = a + 1;
             y = temp[7:0];
             carry = temp[8];
         end
 
-        // Comparison operations
-        4'b1001: y = (a == b) ? 8'b00000001 : 8'b00000000;
-
-        4'b1010: y = (a > b) ? 8'b00000001 : 8'b00000000;
-
-        4'b1011: y = (a < b) ? 8'b00000001 : 8'b00000000;
-
         // =========================
-        // Day 6 Operations
+        // COMPARISON OPERATIONS
         // =========================
 
-        4'b1100: y = ~(a & b);    // NAND
+        // EQUAL
+        5'b01001:
+            y = (a == b) ? 8'd1 : 8'd0;
 
-        4'b1101: y = ~(a | b);    // NOR
+        // GREATER THAN
+        5'b01010:
+            y = (a > b) ? 8'd1 : 8'd0;
 
-        4'b1110: y = ~(a ^ b);    // XNOR
+        // LESS THAN
+        5'b01011:
+            y = (a < b) ? 8'd1 : 8'd0;
 
-        default: y = 8'b00000000;
+        // =========================
+        // DAY 6 LOGIC OPERATIONS
+        // =========================
+
+        // NAND
+        5'b01100: y = ~(a & b);
+
+        // NOR
+        5'b01101: y = ~(a | b);
+
+        // XNOR
+        5'b01110: y = ~(a ^ b);
+
+        // =========================
+        // DAY 7 OPERATIONS
+        // =========================
+
+        // MULTIPLICATION
+        5'b01111: begin
+            temp = a * b;
+            y = temp[7:0];
+            carry = temp[8];
+        end
+
+        // DIVISION
+        5'b10000: begin
+            if (b != 0)
+                y = a / b;
+            else begin
+                y = 8'd0;
+                div_zero = 1'b1;
+            end
+        end
+
+        default: begin
+            y = 8'd0;
+        end
 
     endcase
 
-    // Zero flag
-    if (y == 8'b00000000)
+    // ZERO FLAG
+    if (y == 8'd0)
         zero = 1'b1;
     else
         zero = 1'b0;
