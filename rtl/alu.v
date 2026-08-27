@@ -1,151 +1,162 @@
-module alu(
-    input [7:0] a,
-    input [7:0] b,
-    input [4:0] sel,
+`timescale 1ns/1ps
 
-    output reg [7:0] y,
-    output reg zero,
-    output reg carry,
-    output reg overflow,
-    output reg div_zero
-);
+module alu_tb;
 
-reg [8:0] temp;
+    reg [7:0] a;
+    reg [7:0] b;
+    reg [4:0] sel;
 
-always @(*) begin
+    wire [7:0] y;
+    wire zero;
+    wire carry;
+    wire overflow;
+    wire div_zero;
 
-    // Default values
-    y = 8'b00000000;
-    carry = 1'b0;
-    overflow = 1'b0;
-    div_zero = 1'b0;
-    temp = 9'b000000000;
+    // Instantiate ALU
+    alu uut (
+        .a(a),
+        .b(b),
+        .sel(sel),
+        .y(y),
+        .zero(zero),
+        .carry(carry),
+        .overflow(overflow),
+        .div_zero(div_zero)
+    );
 
-    case (sel)
+    initial begin
 
         // =========================
-        // BASIC ARITHMETIC
-        // =========================
-
         // ADDITION
-        5'b00000: begin
-            temp = a + b;
-            y = temp[7:0];
-            carry = temp[8];
-            overflow = (~(a[7] ^ b[7])) & (y[7] ^ a[7]);
-        end
+        // 10 + 5 = 15
+        // =========================
+        a = 8'd10;
+        b = 8'd5;
+        sel = 5'b00000;
+        #10;
 
+        // =========================
         // SUBTRACTION
-        5'b00001: begin
-            y = a - b;
-            carry = (a >= b);
-            overflow = (a[7] ^ b[7]) & (y[7] ^ a[7]);
-        end
-
+        // 10 - 5 = 5
         // =========================
-        // LOGICAL OPERATIONS
-        // =========================
+        a = 8'd10;
+        b = 8'd5;
+        sel = 5'b00001;
+        #10;
 
         // AND
-        5'b00010: y = a & b;
+        a = 8'b10101010;
+        b = 8'b11001100;
+        sel = 5'b00010;
+        #10;
 
         // OR
-        5'b00011: y = a | b;
+        sel = 5'b00011;
+        #10;
 
         // XOR
-        5'b00100: y = a ^ b;
+        sel = 5'b00100;
+        #10;
 
         // NOT
-        5'b00101: y = ~a;
-
-        // =========================
-        // SHIFT OPERATIONS
-        // =========================
+        sel = 5'b00101;
+        #10;
 
         // SHIFT LEFT
-        5'b00110: begin
-            y = a << 1;
-            carry = a[7];
-        end
+        a = 8'b00001111;
+        sel = 5'b00110;
+        #10;
 
         // SHIFT RIGHT
-        5'b00111: begin
-            y = a >> 1;
-            carry = a[0];
-        end
+        a = 8'b11110000;
+        sel = 5'b00111;
+        #10;
 
-        // =========================
-        // INCREMENT
-        // =========================
-
-        5'b01000: begin
-            temp = a + 1;
-            y = temp[7:0];
-            carry = temp[8];
-        end
-
-        // =========================
-        // COMPARISON OPERATIONS
-        // =========================
+        // INCREMENT: 25 + 1 = 26
+        a = 8'd25;
+        sel = 5'b01000;
+        #10;
 
         // EQUAL
-        5'b01001:
-            y = (a == b) ? 8'd1 : 8'd0;
+        a = 8'd10;
+        b = 8'd10;
+        sel = 5'b01001;
+        #10;
 
         // GREATER THAN
-        5'b01010:
-            y = (a > b) ? 8'd1 : 8'd0;
+        a = 8'd20;
+        b = 8'd10;
+        sel = 5'b01010;
+        #10;
 
         // LESS THAN
-        5'b01011:
-            y = (a < b) ? 8'd1 : 8'd0;
-
-        // =========================
-        // DAY 6 LOGIC OPERATIONS
-        // =========================
+        a = 8'd5;
+        b = 8'd10;
+        sel = 5'b01011;
+        #10;
 
         // NAND
-        5'b01100: y = ~(a & b);
+        a = 8'b10101010;
+        b = 8'b11001100;
+        sel = 5'b01100;
+        #10;
 
         // NOR
-        5'b01101: y = ~(a | b);
+        sel = 5'b01101;
+        #10;
 
         // XNOR
-        5'b01110: y = ~(a ^ b);
+        sel = 5'b01110;
+        #10;
+
+        // MULTIPLICATION: 5 × 3 = 15
+        a = 8'd5;
+        b = 8'd3;
+        sel = 5'b01111;
+        #10;
+
+        // DIVISION: 20 / 4 = 5
+        a = 8'd20;
+        b = 8'd4;
+        sel = 5'b10000;
+        #10;
+
+        // DIVISION BY ZERO
+        a = 8'd20;
+        b = 8'd0;
+        sel = 5'b10000;
+        #10;
 
         // =========================
-        // DAY 7 OPERATIONS
+        // DAY 8
+        // DECREMENT: 10 - 1 = 9
         // =========================
+        a = 8'd10;
+        b = 8'd0;
+        sel = 5'b10001;
+        #10;
 
-        // MULTIPLICATION
-        5'b01111: begin
-            temp = a * b;
-            y = temp[7:0];
-            carry = temp[8];
-        end
+        // DECREMENT ZERO: 0 - 1
+        a = 8'd0;
+        sel = 5'b10001;
+        #10;
 
-        // DIVISION
-        5'b10000: begin
-            if (b != 0)
-                y = a / b;
-            else begin
-                y = 8'd0;
-                div_zero = 1'b1;
-            end
-        end
+        // =========================
+        // MODULUS: 20 % 6 = 2
+        // =========================
+        a = 8'd20;
+        b = 8'd6;
+        sel = 5'b10010;
+        #10;
 
-        default: begin
-            y = 8'd0;
-        end
+        // MODULUS BY ZERO
+        a = 8'd20;
+        b = 8'd0;
+        sel = 5'b10010;
+        #10;
 
-    endcase
+        $finish;
 
-    // ZERO FLAG
-    if (y == 8'd0)
-        zero = 1'b1;
-    else
-        zero = 1'b0;
-
-end
+    end
 
 endmodule
