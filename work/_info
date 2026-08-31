@@ -7,44 +7,184 @@ z2
 !i10e 25
 !i10f 100
 cModel Technology
-dC:/Users/sai krishna/Documents/VLSI_CPU_Project
+Z0 dC:/Users/sai krishna/Documents/VLSI_CPU_Project
 valu
-Z0 !s110 1787845648
+Z1 !s110 1788018923
 !i10b 1
 !s100 ecY;P7`MHEgE78?1EmP:f2
 IM0C3:j3gN39?Q>^1aaJLL0
-Z1 VDg1SIo80bB@j0V0VzS_@n1
-Z2 dC:/Users/sai krishna/documents/VLSI_CPU_Project
-Z3 w1787845533
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+Z3 dC:/Users/sai krishna/documents/VLSI_CPU_Project
+Z4 w1787845533
 8rtl/alu.v
 Frtl/alu.v
 L0 3
-Z4 OV;L;10.5b;63
+Z5 OV;L;10.5b;63
 r1
 !s85 0
 31
-Z5 !s108 1787845648.000000
+Z6 !s108 1788018923.000000
 !s107 rtl/alu.v|
 !s90 -reportprogress|300|rtl/alu.v|
 !i113 1
-Z6 tCvgOpt 0
+Z7 tCvgOpt 0
 valu_tb
-R0
+Z8 !s110 1788018924
 !i10b 1
 !s100 n9N=68OZQngE48[QQ3V<C2
 IBmOnAzPW12RZN`a3HM0>d3
-R1
 R2
 R3
+R4
 8tb/alu_tb.v
 Ftb/alu_tb.v
 L0 3
-R4
+R5
 r1
 !s85 0
 31
-R5
+Z9 !s108 1788018924.000000
 !s107 tb/alu_tb.v|
 !s90 -reportprogress|300|tb/alu_tb.v|
 !i113 1
+R7
+vcpu_blocks_tb
+!s110 1787985365
+!i10b 1
+!s100 GVmlUNNHENNO_0Nm_9]2:2
+I]Z94^;^Y0zJEhC?>iRlRH3
+R2
+R0
+w1787985267
+8tb/cpu_blocks_tb.v
+Ftb/cpu_blocks_tb.v
+L0 3
+R5
+r1
+!s85 0
+31
+!s108 1787985365.000000
+!s107 tb/cpu_blocks_tb.v|
+!s90 -reportprogress|300|tb/cpu_blocks_tb.v|
+!i113 1
+R7
+vinstruction_memory
+Z10 !s110 1788065783
+!i10b 1
+!s100 ;]B;YMbAebOF8P3_=9@981
+IMj5P?JgX_o3@zR<gV5RN;3
+R2
+R3
+w1788065201
+8rtl/instruction_memory.v
+Frtl/instruction_memory.v
+L0 3
+R5
+r1
+!s85 0
+31
+Z11 !s108 1788065783.000000
+!s107 rtl/instruction_memory.v|
+!s90 -reportprogress|300|rtl/instruction_memory.v|
+!i113 1
+R7
+vinstruction_memory_tb
+R10
+!i10b 1
+!s100 5JN>8>nd0ij6?cH@c1AWb0
+Ic>dh=n2MVoRDdP=7jzDgk3
+R2
+R3
+w1788065238
+8tb/instruction_memory_tb.v
+Ftb/instruction_memory_tb.v
+L0 3
+R5
+r1
+!s85 0
+31
+R11
+!s107 tb/instruction_memory_tb.v|
+!s90 -reportprogress|300|tb/instruction_memory_tb.v|
+!i113 1
+R7
+vprogram_counter
+R8
+!i10b 1
+!s100 O?:T;lNOhNl6j6hmiXlC40
+IL0UI]Mmb;G>G5adan7TZ40
+R2
+R3
+w1787981638
+8rtl/program_counter.v
+Frtl/program_counter.v
+L0 3
+R5
+r1
+!s85 0
+31
+R9
+!s107 rtl/program_counter.v|
+!s90 -reportprogress|300|rtl/program_counter.v|
+!i113 1
+R7
+vprogram_counter_tb
+R8
+!i10b 1
+!s100 39XgZ>m^mM]L64>MPZ8QV0
+I2W?EAGZn2dik]97902NLl1
+R2
+R3
+w1787981804
+8tb/program_counter_tb.v
+Ftb/program_counter_tb.v
+L0 3
+R5
+r1
+!s85 0
+31
+R9
+!s107 tb/program_counter_tb.v|
+!s90 -reportprogress|300|tb/program_counter_tb.v|
+!i113 1
+R7
+vregister_file
+R1
+!i10b 1
+!s100 g9nSRWnfmZWCCQ@Y`KEM51
+IOhKOf5ToN3<XAR9bAi8;91
+R2
+R3
+w1787930575
+8rtl/register_file.v
+Frtl/register_file.v
+L0 3
+R5
+r1
+!s85 0
+31
 R6
+!s107 rtl/register_file.v|
+!s90 -reportprogress|300|rtl/register_file.v|
+!i113 1
+R7
+vregister_file_tb
+R8
+!i10b 1
+!s100 zYINfz;]WS_o:S_iJF@]W3
+IGON_YJobkTNWG@DGGiZ1e3
+R2
+R3
+w1787930615
+8tb/register_file_tb.v
+Ftb/register_file_tb.v
+L0 3
+R5
+r1
+!s85 0
+31
+R9
+!s107 tb/register_file_tb.v|
+!s90 -reportprogress|300|tb/register_file_tb.v|
+!i113 1
+R7
