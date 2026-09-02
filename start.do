@@ -8,3 +8,4 @@ vsim work.alu_tb
 
 add wave *
 run -all
+//to run files at once
